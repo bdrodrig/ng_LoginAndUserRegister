@@ -1,1 +1,21 @@
-<p>register works!</p>
+<div class="container">
+  <h2>Crear Cuenta</h2>
+  <form [formGroup]="registerForm" (ngSubmit)="sendData()">
+
+    <input formControlName="firstName" placeholder="Nombres">
+    @if (registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched) {
+      <small class="error">El nombre es obligatorio.</small>
+    }
+
+    <input formControlName="email" type="email" placeholder="Correo Electrónico">
+    @if (registerForm.get('email')?.errors?.['email']) {
+      <small class="error">Formato de correo inválido.</small>
+    }
+
+    <input formControlName="password" type="password" placeholder="Contraseña">
+
+    <button type="submit" [disabled]="registerForm.invalid">
+      @if (userService.isLoading()) { Enviando... } @else { Registrar Usuario }
+    </button>
+  </form>
+</div>
