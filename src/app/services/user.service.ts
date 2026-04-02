@@ -1,6 +1,7 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { inject, Injectable, signal } from "@angular/core";
 import { UserRequest } from "../interfaces/user.interface";
+import { catchError, throwError } from "rxjs";
 
 @Injectable({providedIn: 'root'})
 export class UserService {
@@ -11,6 +12,11 @@ export class UserService {
 
   register(user: UserRequest){
     this.isLoading.set(true);
-    return this.http.post(this.apiUrlRegister, user);
+    return this.http.post(this.apiUrlRegister, user).pipe(
+      catchError((error: HttpErrorResponse)=>{
+        this.isLoading.set(false);
+        return throwError(()=> error);
+      })
+    );
   }
 }

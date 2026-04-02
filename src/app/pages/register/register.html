@@ -6,20 +6,22 @@
       <div>
         <label class="block text-sm font-medium text-gray-700">Nombres</label>
         <input type="text" formControlName="firstName"
+               (keypress)="soloLetras($event)"
                [class.border-red-500] = "registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched"
                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
                 @if (registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched) {
-                  <p class="mt-1 text-xs text-red-500">Usar un nombre valido.</p>
+                  <p class="mt-1 text-xs text-red-500">Solo se permiten letras, sin números ni símbolos.</p>
                 }
 
       </div>
       <div>
         <label class="block text-sm font-medium text-gray-700">Apellidos</label>
         <input type="text" formControlName="lastName"
+               (keypress)="soloLetras($event)"
                [class.border-red-500] = "registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched"
                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
                 @if (registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched) {
-                  <p class="mt-1 text-xs text-red-500">Usar un apellido valido.</p>
+                  <p class="mt-1 text-xs text-red-500">Solo se permiten letras, sin números ni símbolos.</p>
                 }
       </div>
     </div>
@@ -45,14 +47,27 @@
               }
     </div>
 
-    <div>
+    <div class="relative">
       <label class="block text-sm font-medium text-gray-700">Password</label>
-      <input type="password" formControlName="password"
-             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+      <input [type]=" showPassword ? 'text' : 'password' "
+             formControlName="password"
+             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2">
+      <button
+              type="button"
+              (click)="togglePasswordVisibility()"
+              class="mt-2.5 absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+            >
+              @if (showPassword) {
+                <img width="24" height="24" src="https://img.icons8.com/material-rounded/24/lock-2.png" alt="lock-2"/>
+              } @else {
+                <img width="24" height="24" src="https://img.icons8.com/pastel-glyph/64/surprise--v1.png" alt="surprise--v1"/>
+              }
+      </button>
     </div>
 
     <button type="submit"
-            class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors font-semibold">
+            [disabled]="registerForm.invalid || userService.isLoading"
+            class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed">
       @if (userService.isLoading()) { Enviando... } @else { Registrar Usuario }
     </button>
   </form>
