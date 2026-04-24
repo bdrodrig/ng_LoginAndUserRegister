@@ -1,1 +1,48 @@
-<p>login works!</p>
+<div class="max-w-md mx-auto mt-10 p-6 bg-white rounded-xl shadow-lg">
+  <h2 class="text-2xl font-bold mb-6 text-gray-800 text-center">Iniciar Sesión</h2>
+
+  <form [formGroup]="loginForm" (ngSubmit)="onsubmit()" class="space-y-4">
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Usuario o Email</label>
+      <input type="text" formControlName="identifier"
+             (keypress)="soloLetras($event)"
+             [class.border-red-500] = "loginForm.get('identifier')?.invalid && loginForm.get('identifier')?.touched"
+             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+             @if (loginForm.get('identifier')?.invalid && loginForm.get('identifier')?.touched) {
+               <p class="mt-1 text-xs text-red-500">El usuario o email es requerido (min. 3 caracteres).</p>
+             }
+    </div>
+
+    <div class="relative">
+      <label class="block text-sm font-medium text-gray-700">Contraseña</label>
+      <input [type]=" showPassword ? 'text' : 'password' "
+             formControlName="password"
+             [class.border-red-500] = "loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2">
+      <button
+              type="button"
+              (click)="togglePasswordVisibility()"
+              class="mt-2.5 absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+            >
+              @if (showPassword) {
+                <img width="24" height="24" src="https://img.icons8.com/material-rounded/24/lock-2.png" alt="lock-2"/>
+              } @else {
+                <img width="24" height="24" src="https://img.icons8.com/pastel-glyph/64/surprise--v1.png" alt="surprise--v1"/>
+              }
+      </button>
+      @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+        <p class="mt-1 text-xs text-red-500">La contraseña es requerida.</p>
+      }
+    </div>
+
+    <button type="submit"
+            [disabled]="loginForm.invalid"
+            class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed">
+      Iniciar Sesión
+    </button>
+
+    <div class="text-center mt-4">
+      <p class="text-sm text-gray-600">¿No tienes cuenta? <a href="/register" class="text-blue-600 hover:underline">Regístrate</a></p>
+    </div>
+  </form>
+</div>

@@ -66,9 +66,13 @@
     </div>
 
     <button type="submit"
-            [disabled]="registerForm.invalid || userService.isLoading"
+            [disabled]="registerForm.invalid || userService.isLoading()"
             class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed">
       @if (userService.isLoading()) { Enviando... } @else { Registrar Usuario }
     </button>
+
+    <div class="text-center mt-4">
+      <p class="text-sm text-gray-600">¿Ya tienes una cuenta? <a href="/login" class="text-blue-600 hover:underline">Inicia sesión</a></p>
+    </div>
   </form>
 </div>
